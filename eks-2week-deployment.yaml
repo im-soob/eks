@@ -1,0 +1,35 @@
+# 배포할 내용을 일단 적어보자 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myblog
+  name: dep-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+			tier: db
+  template:
+    metadata:
+      labels:
+        app: mysql
+        tier: db 
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.26
+        ports:
+          - containerPort: 3306
+            protocol: TCP
+				env: # 컨테이너의 환경 변수 목록
+					- name: MYSQL_ROOT_PASSWORD
+						value: root
+        resources:
+	        requests:
+	          cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
